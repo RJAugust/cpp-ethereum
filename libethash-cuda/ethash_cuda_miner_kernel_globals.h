@@ -5,7 +5,7 @@
 
 //#include "cuda_helper.h"
 
-__constant__ hash128_t* d_dag;
+__device__ __constant__ hash128_t* d_dag;
 __constant__ hash64_t* d_light;
 __constant__ uint64_t d_target;
 __constant__ uint32_t d_light_size;

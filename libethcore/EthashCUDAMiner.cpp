@@ -186,8 +186,7 @@ void EthashCUDAMiner::workLoop()
 			{
 				if (s_dagLoadIndex >= s_numInstances && s_dagInHostMemory)
 				{
-					// all devices have loaded DAG, we can free now
-					delete s_dagInHostMemory;
+					// all devices have loaded DAG, we can free now if it is properly defined
 //					delete[] s_dagInHostMemory;
 					s_dagInHostMemory = NULL;
 
