@@ -259,7 +259,7 @@ public:
 		{
 			m_worktimeout = atoi(argv[++i]);
 		}
-		
+
 #endif
 #if ETH_ETHASHCL || !ETH_TRUE
 		else if (arg == "--opencl-platform" && i + 1 < argc)
@@ -508,7 +508,7 @@ public:
 				EthashGPUMiner::setDevices(m_openclDevices, m_openclDeviceCount);
 				m_miningThreads = m_openclDeviceCount;
 			}
-			
+
 			if (!EthashGPUMiner::configureGPU(
 					m_localWorkSize,
 					m_globalWorkSizeMultiplier,
@@ -535,7 +535,7 @@ public:
 				EthashCUDAMiner::setDevices(m_cudaDevices, m_cudaDeviceCount);
 				m_miningThreads = m_cudaDeviceCount;
 			}
-			
+
 			EthashCUDAMiner::setNumInstances(m_miningThreads);
 			if (!EthashCUDAMiner::configureGPU(
 				m_localWorkSize,
@@ -557,7 +557,7 @@ public:
 			doBenchmark(m_minerType, m_phoneHome, m_benchmarkWarmup, m_benchmarkTrial, m_benchmarkTrials);
 		else if (mode == OperationMode::Farm)
 			doFarm(m_minerType, m_activeFarmURL, m_farmRecheckPeriod);
-		else if (mode == OperationMode::Simulation) 
+		else if (mode == OperationMode::Simulation)
 			doSimulation(m_minerType);
 #if ETH_STRATUM || !ETH_TRUE
 		else if (mode == OperationMode::Stratum)
@@ -643,7 +643,7 @@ private:
 		exit(0);
 	}
 
-	
+
 
 	void doBenchmark(MinerType _m, bool _phoneHome, unsigned _warmupDuration = 15, unsigned _trialDuration = 3, unsigned _trials = 5)
 	{
@@ -814,7 +814,7 @@ private:
 		}
 	}
 
-	
+
 	void doFarm(MinerType _m, string & _remote, unsigned _recheckPeriod)
 	{
 		map<string, GenericFarm<EthashProofOfWork>::SealerDescriptor> sealers;
@@ -963,7 +963,7 @@ private:
 						}
 						m_farmRetries = 0;
 					}
-					
+
 				}
 			}
 #endif
@@ -983,7 +983,7 @@ private:
 #endif
 		if (!m_farmRecheckSet)
 			m_farmRecheckPeriod = m_defaultStratumFarmRecheckPeriod;
-		
+
 		GenericFarm<EthashProofOfWork> f;
 
 		// this is very ugly, but if Stratum Client V2 tunrs out to be a success, V1 will be completely removed anyway
@@ -1020,9 +1020,13 @@ private:
 				if (client.isConnected())
 				{
 					if (client.current())
+					{
 						minelog << "Mining on PoWhash" << "#" + (client.currentHeaderHash().hex().substr(0, 8)) << ": " << mp << f.getSolutionStats();
-					else if (client.waitState() == MINER_WAIT_STATE_WORK)
-						minelog << "Waiting for work package...";
+					}
+					else {
+						if (client.waitState() == MINER_WAIT_STATE_WORK)
+							minelog << "Waiting for work package...";
+					}
 				}
 				this_thread::sleep_for(chrono::milliseconds(m_farmRecheckPeriod));
 			}
@@ -1054,10 +1058,13 @@ private:
 				f.resetMiningProgress();
 				if (client.isConnected())
 				{
-					if (client.current())
+					if (client.current()) {
 						minelog << "Mining on PoWhash" << "#" + (client.currentHeaderHash().hex().substr(0, 8)) << ": " << mp << f.getSolutionStats();
-					else if (client.waitState() == MINER_WAIT_STATE_WORK)
-						minelog << "Waiting for work package...";
+					}
+					else {
+						if (client.waitState() == MINER_WAIT_STATE_WORK)
+							minelog << "Waiting for work package...";
+					}
 				}
 				this_thread::sleep_for(chrono::milliseconds(m_farmRecheckPeriod));
 			}
@@ -1106,7 +1113,7 @@ private:
 	/// Farm params
 	string m_farmURL = "http://127.0.0.1:8545";
 	string m_farmFailOverURL = "";
-	
+
 
 	string m_activeFarmURL = m_farmURL;
 	unsigned m_farmRetries = 0;
