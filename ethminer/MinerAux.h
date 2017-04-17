@@ -1024,8 +1024,9 @@ private:
 						minelog << "Mining on PoWhash" << "#" + (client.currentHeaderHash().hex().substr(0, 8)) << ": " << mp << f.getSolutionStats();
 					}
 					else {
-						if (client.waitState() == MINER_WAIT_STATE_WORK)
+						if (client.waitState() == MINER_WAIT_STATE_WORK) {
 							minelog << "Waiting for work package...";
+						}
 					}
 				}
 				this_thread::sleep_for(chrono::milliseconds(m_farmRecheckPeriod));
@@ -1062,8 +1063,9 @@ private:
 						minelog << "Mining on PoWhash" << "#" + (client.currentHeaderHash().hex().substr(0, 8)) << ": " << mp << f.getSolutionStats();
 					}
 					else {
-						if (client.waitState() == MINER_WAIT_STATE_WORK)
+						if (client.waitState() == MINER_WAIT_STATE_WORK) {
 							minelog << "Waiting for work package...";
+						}
 					}
 				}
 				this_thread::sleep_for(chrono::milliseconds(m_farmRecheckPeriod));
